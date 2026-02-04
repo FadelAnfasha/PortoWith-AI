@@ -101,9 +101,7 @@ const projects = [
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#020617] ...">
-    <ChatAgent />
-  </div>
+  <ChatAgent />
   <div
     class="min-h-screen bg-[#020617] text-slate-200 selection:bg-blue-500/30 font-sans relative overflow-hidden"
   >

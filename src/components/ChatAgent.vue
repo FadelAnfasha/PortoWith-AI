@@ -4,6 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import Button from "primevue/button";
 
 const visible = ref(false);
+const chatContainer = ref(null);
 const userInput = ref("");
 const messages = ref([
   {
@@ -33,6 +34,11 @@ const sendMessage = async () => {
     const result = await model.generateContent(userText);
     const response = await result.response;
     messages.value.push({ role: "assistant", text: response.text() });
+    setTimeout(() => {
+      if (chatContainer.value) {
+        chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+      }
+    }, 100);
   } catch (error) {
     messages.value.push({
       role: "assistant",
@@ -67,6 +73,7 @@ const sendMessage = async () => {
       <div class="h-80 overflow-y-auto p-4 space-y-4 text-sm flex flex-col">
         <div
           v-for="(msg, i) in messages"
+          ref="chatContainer"
           :key="i"
           :class="
             msg.role === 'user'
@@ -90,7 +97,7 @@ const sendMessage = async () => {
           v-model="userInput"
           @keyup.enter="sendMessage"
           placeholder="Tanya sesuatu..."
-          class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:border-blue-500"
+          class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-blue-500 placeholder:text-slate-500"
         />
         <Button
           icon="pi pi-send"
