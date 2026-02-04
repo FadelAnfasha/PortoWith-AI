@@ -4,6 +4,7 @@ import Button from "primevue/button";
 import Card from "primevue/card";
 import Tag from "primevue/tag";
 import Timeline from "primevue/timeline";
+import ChatAgent from "./components/ChatAgent.vue"; // Import komponen baru
 
 const isLoaded = ref(false);
 onMounted(() => {
@@ -22,7 +23,7 @@ const contactWA = () => {
     "Halo Fadel, saya melihat portofolio Anda dan tertarik untuk bekerja sama.";
   window.open(
     `https://wa.me/628983692104?text=${encodeURIComponent(message)}`,
-    "_blank"
+    "_blank",
   );
 };
 
@@ -100,6 +101,9 @@ const projects = [
 </script>
 
 <template>
+  <div class="min-h-screen bg-[#020617] ...">
+    <ChatAgent />
+  </div>
   <div
     class="min-h-screen bg-[#020617] text-slate-200 selection:bg-blue-500/30 font-sans relative overflow-hidden"
   >
