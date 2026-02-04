@@ -19,11 +19,10 @@ const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
 const model = genAI.getGenerativeModel(
   {
-    model: "gemini-1.5-flash",
+    model: "gemini-2.0-flash",
     systemInstruction:
       "Kamu adalah asisten virtual Fadel Anfasha Putra. Jawablah pertanyaan pengunjung tentang pengalaman Fadel di Laravel, Vue, dan AI dengan ramah dan profesional.",
-  },
-  { apiVersion: "v1" }, // Ini adalah argumen kedua, diletakkan setelah tutup kurung kurawal objek pertama
+  }, // Ini adalah argumen kedua, diletakkan setelah tutup kurung kurawal objek pertama
 );
 
 const sendMessage = async () => {
