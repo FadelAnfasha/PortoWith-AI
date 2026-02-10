@@ -131,7 +131,7 @@ const projects = [
   },
   {
     title: "Accounting Automation Macros",
-    desc: "Automating the generation of Statements of Account, tax reports, and withholding tax slips also creating Statement of Account Letter using VBA Excel Macros.",
+    desc: "Automating the generation of Statements of Account, tax reports, and withholding tax slips using VBA Excel Macros.",
     tags: ["VBA", "Excel", "Automation"],
     category: "topy",
   },
