@@ -1,10 +1,22 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import Button from "primevue/button";
-import Card from "primevue/card";
 import Tag from "primevue/tag";
 import Timeline from "primevue/timeline";
 import ChatAgent from "./components/ChatAgent.vue"; // Import komponen baru
+import profileImage from "./assets//img/pp.jpg";
+const selectedCategory = ref("topy");
+
+const filteredProjects = computed(() => {
+  return projects.filter((p) => p.category === selectedCategory.value);
+});
+
+const selectedCompanyName = computed(() => {
+  const experience = experiences.value.find(
+    (exp) => exp.id === selectedCategory.value,
+  );
+  return experience ? experience.company : "Project Lainnya";
+});
 
 const isLoaded = ref(false);
 onMounted(() => {
@@ -26,21 +38,6 @@ const contactWA = () => {
     "_blank",
   );
 };
-
-const experiences = ref([
-  {
-    status: "Fullstack Developer",
-    date: "2023 - Present",
-    icon: "pi pi-briefcase",
-    desc: "Developing enterprise solutions with Laravel & Vue.",
-  },
-  {
-    status: "Data Automation Specialist",
-    date: "2021 - 2023",
-    icon: "pi pi-cog",
-    desc: "Optimizing workflows using Python and VBA.",
-  },
-]);
 
 const skills = [
   {
@@ -79,29 +76,92 @@ const skills = [
     logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg",
   },
   {
-    name: "VBA Automation",
-    level: "Expert",
-    // Menggunakan logo Excel 2019-2026 yang modern
-    logo: "https://upload.wikimedia.org/wikipedia/commons/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg",
+    name: "Ollama",
+    level: "Beginner",
+    logo: "https://ollama.com/public/ollama.png",
   },
+  // {
+  //   name: "VBA Automation",
+  //   level: "Expert",
+  //   // Menggunakan logo Excel 2019-2026 yang modern
+  //   logo: "https://upload.wikimedia.org/wikipedia/commons/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg",
+  // },
 ];
 
-const projects = [
+const experiences = ref([
   {
-    title: "Neural Network Engine",
-    desc: "Sistem otomasi berbasis AI untuk klasifikasi data perusahaan.",
-    tags: ["Python", "Tensorflow"],
+    id: "topy",
+    status: "Finance, Accounting, & Tax Dept. Supervisor",
+    company: "PT. Topy Palingda Manufacturing Indonesia",
+    date: "2024 - 2026",
+    icon: "pi pi-chart-line",
+    desc: "Leading the digitalization of financial processes and developing web-based internal applications to enhance departmental efficiency.",
   },
   {
-    title: "Internal ERP System",
-    desc: "Integrasi sistem backend Laravel dengan automasi spreadsheet.",
-    tags: ["Laravel", "VBA"],
+    id: "procodecg",
+    status: "AI Internship",
+    company: "ProCodeCG",
+    date: "2021",
+    icon: "pi pi-database",
+    desc: "Focused on data preparation (labeling) to train machine learning models for architectural building recognition.",
+  },
+  {
+    id: "telkom",
+    status: "Internship",
+    company: "Telkom Indonesia (Karawang Region)",
+    date: "2020",
+    icon: "pi pi-comment",
+    desc: "Built automated chatbot solutions for customer subscription monitoring systems.",
+  },
+]);
+
+const projects = [
+  // Projects at PT. Topy
+  {
+    title: "Web-Based Internal Finance App",
+    desc: "An application to calculate price variances between actual and standard raw materials, as well as production processing costs for all finished goods.",
+    tags: ["Laravel", "Vue.js", "Finance"],
+    category: "topy",
+  },
+  {
+    title: "Hybrid Tax Invoice System",
+    desc: "Transformed the tax invoice exchange system from manual (offline) to a hybrid online-offline system.",
+    tags: ["Digital Transformation", "Tax"],
+    category: "topy",
+  },
+  {
+    title: "Accounting Automation Macros",
+    desc: "Automating the generation of Statements of Account, tax reports, and withholding tax slips also creating Statement of Account Letter using VBA Excel Macros.",
+    tags: ["VBA", "Excel", "Automation"],
+    category: "topy",
+  },
+  {
+    title: "Digital Entertainment Form",
+    desc: "Digitalized manual entertainment request forms into an integrated digital platform.",
+    tags: ["Laravel", "Bootstrap", "Digitalization"],
+    category: "topy",
+  },
+
+  // Project at ProCodeCG
+  {
+    title: "ML Training Data: Building Blueprint",
+    desc: "Executed data labeling for building blueprints to train ML model accuracy in detecting house corner types.",
+    tags: ["Machine Learning", "Data Labeling"],
+    category: "procodecg",
+  },
+
+  // Project at Telkom
+  {
+    title: "Telegram Monitoring Bot",
+    desc: "A Telegram chatbot for real-time monitoring of customer subscription statuses.",
+    tags: ["Telegram Webhook", "Monitoring"],
+    category: "telkom",
   },
 ];
 </script>
 
 <template>
-  <ChatAgent />
+  <!-- <ChatAgent /> -->
   <div
     class="min-h-screen bg-[#020617] text-slate-200 selection:bg-blue-500/30 font-sans relative overflow-hidden"
   >
@@ -120,6 +180,18 @@ const projects = [
     <Transition name="fade">
       <div v-if="isLoaded" class="max-w-4xl mx-auto px-6 py-20">
         <header class="text-center mb-24">
+          <div class="mb-8 flex justify-center">
+            <div class="relative group">
+              <div
+                class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"
+              ></div>
+              <img
+                :src="profileImage"
+                alt="Fadel's Profile"
+                class="relative w-128 h-124 rounded-full border-2 border-slate-800 object-cover shadow-2xl"
+              />
+            </div>
+          </div>
           <div
             class="inline-block px-4 py-1.5 rounded-full border border-slate-700 bg-slate-800/50 text-blue-400 text-sm font-medium mb-6 animate-pulse"
           >
@@ -206,22 +278,30 @@ const projects = [
             Career Journey
           </h2>
           <Timeline :value="experiences" class="customized-timeline">
-            <template #marker="slotProps">
-              <span
-                class="flex w-8 h-8 items-center justify-center text-white rounded-full z-10 shadow-lg bg-blue-600"
-              >
-                <i :class="slotProps.item.icon"></i>
-              </span>
-            </template>
             <template #content="slotProps">
-              <div class="mb-10 ml-4">
-                <h3 class="font-bold text-lg text-white">
+              <div
+                @click="selectedCategory = slotProps.item.id"
+                :class="[
+                  'mb-10 ml-4 p-4 rounded-xl cursor-pointer transition-all duration-300 border border-transparent',
+                  selectedCategory === slotProps.item.id
+                    ? 'bg-blue-600/10 border-blue-500/50 shadow-[0_0_20px_rgba(37,99,235,0.1)]'
+                    : 'hover:bg-slate-800/50',
+                ]"
+              >
+                <h3
+                  :class="[
+                    'font-bold text-lg',
+                    selectedCategory === slotProps.item.id
+                      ? 'text-blue-400'
+                      : 'text-white',
+                  ]"
+                >
                   {{ slotProps.item.status }}
                 </h3>
-                <small class="text-blue-400 block mb-2">{{
+                <small class="text-slate-500 block mb-2">{{
                   slotProps.item.date
                 }}</small>
-                <p class="text-slate-400 leading-relaxed">
+                <p class="text-slate-400 text-sm leading-relaxed">
                   {{ slotProps.item.desc }}
                 </p>
               </div>
@@ -230,14 +310,22 @@ const projects = [
         </section>
 
         <section>
-          <h2
-            class="text-xs uppercase tracking-[0.3em] text-slate-500 font-bold mb-8"
-          >
-            Selected Projects
-          </h2>
+          <div class="flex items-center justify-between mb-8">
+            <h2
+              class="text-xs uppercase tracking-[0.3em] text-slate-500 font-bold"
+            >
+              Projects during this period
+            </h2>
+
+            <Tag
+              :value="selectedCompanyName"
+              class="!bg-blue-600/20 !text-blue-400 !px-4 !py-1.5 !rounded-lg"
+            />
+          </div>
+
           <div class="grid md:grid-cols-2 gap-6">
             <div
-              v-for="p in projects"
+              v-for="p in filteredProjects"
               :key="p.title"
               class="p-6 bg-slate-900/40 border border-slate-800 rounded-3xl hover:-translate-y-2 transition-all duration-300 shadow-xl"
             >
