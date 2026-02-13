@@ -1,15 +1,21 @@
 import { createApp } from "vue";
-import PrimeVue from "primevue/config";
-import Aura from "@primevue/themes/aura";
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
+import "vuetify/styles";
+import "@mdi/font/css/materialdesignicons.css";
 import App from "./App.vue";
 
 import "./style.css"; // Import Tailwind
-import "primeicons/primeicons.css"; // Import Icon
 
-const app = createApp(App);
-app.use(PrimeVue, {
+const vuetify = createVuetify({
+  components,
+  directives,
   theme: {
-    preset: Aura,
+    defaultTheme: "dark",
   },
 });
+
+const app = createApp(App);
+app.use(vuetify);
 app.mount("#app");
