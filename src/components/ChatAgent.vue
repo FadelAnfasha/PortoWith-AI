@@ -20,7 +20,7 @@ const checkStatus = async () => {
   try {
     // Coba inisialisasi model dummy untuk cek koneksi/key
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
     // Ping simple
     await model.generateContent("ping");
     isOnline.value = true;
@@ -117,7 +117,7 @@ const sendMessage = async () => {
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.5-flash",
       systemInstruction: `Kamu adalah asisten virtual Fadel Anfasha Putra. Berikut adalah biodata Fadel: ${bioFadel}. Jawablah dengan format Markdown yang rapi.`,
     });
 
