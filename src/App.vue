@@ -58,8 +58,8 @@ const observeElements = () => {
 
 
 const filteredProjects = computed(() => {
-  console.log(selectedCategory.value);
-  console.log(projects.filter((p) => p.category === selectedCategory.value));
+  // console.log(selectedCategory.value);
+  // console.log(projects.filter((p) => p.category === selectedCategory.value));
   return projects.filter((p) => p.category === selectedCategory.value);
 });
 
