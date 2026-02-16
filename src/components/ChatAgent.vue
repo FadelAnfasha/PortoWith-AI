@@ -22,7 +22,7 @@ const checkStatus = async () => {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     // Ping simple
-    await model.generateContent("ping");
+    // await model.generateContent("ping");
     isOnline.value = true;
   } catch (error) {
     console.error("Gemini connection failed:", error);
@@ -165,9 +165,9 @@ const renderMarkdown = (text) => {
           <div
             :class="['w-2 h-2 rounded-full animate-pulse', isOnline ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500']">
           </div>
-          <span :class="['text-[10px] font-medium', isOnline ? 'text-green-400' : 'text-red-400']">
+          <!-- <span :class="['text-[10px] font-medium', isOnline ? 'text-green-400' : 'text-red-400']">
             {{ isOnline ? 'Online' : 'Offline' }}
-          </span>
+          </span> -->
         </div>
       </div>
 
