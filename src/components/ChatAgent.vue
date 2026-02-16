@@ -20,7 +20,7 @@ const checkStatus = async () => {
   try {
     // Coba inisialisasi model dummy untuk cek koneksi/key
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     // Ping simple
     await model.generateContent("ping");
     isOnline.value = true;
