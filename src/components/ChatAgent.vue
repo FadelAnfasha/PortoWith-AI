@@ -1,16 +1,16 @@
 <script setup>
 import { ref, nextTick, watch } from "vue";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { marked } from "marked"; // Import library-nya
+import { marked } from "marked"; // Import library
 
 const visible = ref(false);
 const chatContainer = ref(null);
 const userInput = ref("");
 const loading = ref(false);
-const isOnline = ref(false); // Status online/offline
+const isOnline = ref(false); // Online/offline status
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
-// Cek status API saat komponen dimount
+// Check API status when component is mounted
 const checkStatus = async () => {
   if (!apiKey) {
     isOnline.value = false;
@@ -18,10 +18,10 @@ const checkStatus = async () => {
   }
 
   try {
-    // Coba inisialisasi model dummy untuk cek koneksi/key
+    // Initialize dummy model to check connection/key
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-    // Ping simple
+    // Simple ping
     // await model.generateContent("ping");
     isOnline.value = true;
   } catch (error) {
@@ -30,7 +30,7 @@ const checkStatus = async () => {
   }
 };
 
-// Auto scroll ke bawah
+// Auto scroll to bottom
 const scrollToBottom = async () => {
   await nextTick();
   if (chatContainer.value) {
@@ -38,7 +38,7 @@ const scrollToBottom = async () => {
   }
 };
 
-// Watch visibility untuk cek status saat dibuka pertama kali
+// Watch visibility to check status when opened for the first time
 watch(visible, (newVal) => {
   if (newVal) {
     checkStatus();
@@ -49,59 +49,58 @@ watch(visible, (newVal) => {
 const messages = ref([
   {
     role: "assistant",
-    text: "Halo! Saya AI Assistant Fadel. Ada yang bisa saya bantu terkait proyek Laravel atau AI Fadel?",
+    text: "Hello! I am Fadel's AI Assistant. How can I help you regarding Fadel's Laravel or AI projects?",
   },
 ]);
 
 const bioFadel = `
-NAMA: Fadel Anfasha Putra
-PERAN: Fullstack Developer & AI Enthusiast
-KEAHLIAN UTAMA:
+NAME: Fadel Anfasha Putra
+ROLE: Fullstack Developer & AI Enthusiast
+CORE SKILLS:
 - Backend: Laravel (PHP)
 - Frontend: Vue.js, JavaScript, Tailwind CSS
-- AI/Data: Python,TensorFlow, Pandas, Automation Scripts
+- AI/Data: Python, TensorFlow, Pandas, Automation Scripts
 
-RIWAYAT PEKERJAAN:
-a.Telkom Indonesia (Witel Karawang) 
-  Tahun : 2020
-  Posisi : Internship
-  Pencapaian : Membuat ChatBot pada aplikasi telegram untuk monitoring customer subscription.
+WORK HISTORY:
+a. Telkom Indonesia (Witel Karawang) 
+   Year: 2020
+   Position: Internship
+   Achievement: Built a Telegram ChatBot for monitoring customer subscriptions.
 b. ProCodeCG:
-  Tahun : 2021
-  Posisi : Internship
-  Pencapaian : Labeling blueprint bangunan untuk melatih model machine learning agar dapat membedakan jenis sudut-sudut rumah.
+   Year: 2021
+   Position: Internship
+   Achievement: building labeling blueprint for machine learning models to distinguish house corner types.
 c. PT. Topy Palingda Manufacturing Indonesia
-  Tahun : 2024-2026
-  Posisi : Supervisor Departemen Finance, Accounting, & Tax
-  Pencapaian :  -Membuat aplikasi internal departemen berbasis web untuk menghitung selisih harga bahan baku yang digunakan secara aktual dengan standard.
-                -Menambahkan aplikasi untung menghitung biaya proses dalam produksi seluruh finish good pada aplikasi internal departemen.
-                -Menambahkan aplikasi Request for service pada aplikasi internal departemen.
-                -Membuat macro excel untuk otomatisasi pembuatan Statement of Account.
-                -Membuat macro excel untuk otomatisasi pembuatan laporan pajak masuk dan keluar.
-                -Membuat macro excel untuk otomatisasi pembuatan laporan bukti potong.
-                -Membuat sistem penukaran faktur pajak menjadi hybrid (Online dan Offline) dari yang sebelumnya offline.
-                -Mendigitalisasi form entertainment menjadi form digital pada aplikasi internal perusahaan.
+   Year: 2024-2026
+   Position: Supervisor of Finance, Accounting, & Tax Department
+   Achievements:  - Built an internal web application for calculating raw material price variances.
+                 - Added specialized modules for production cost calculation.
+                 - Implemented a "Request for Service" system in the internal app.
+                 - Developed Excel macros for Statement of Account automation.
+                 - Developed macros for tax reporting (Inbound/Outbound).
+                 - Developed macros for withholding tax certificates.
+                 - Modernized tax invoice submission to a hybrid system (Online/Offline).
+                 - Digitalized company entertainment forms.
 
-GAYA KOMUNIKASI:
-- Ramah, profesional, dan to-the-point.
-- Gunakan Bahasa Indonesia yang santai tapi sopan.
-- Jika ditanya hal di luar topik koding/Fadel, arahkan kembali dengan sopan untuk menghubungi langsung baik via WA,Email atau LinkedIn.
+COMMUNICATION STYLE:
+- Friendly, professional, and to-the-point.
+- Use professional yet approachable English.
+- If asked about topics outside of coding or Fadel's profile, politely redirect them to contact Fadel directly via WhatsApp, Email, or LinkedIn.
 
-FORMAT JAWABAN:
-- Gunakan bullet points (-) untuk daftar keahlian atau pengalaman.
-- Gunakan baris baru (Enter) yang jelas antar poin.
-- Gunakan Bold (**) hanya untuk judul atau poin penting.
-- JANGAN menulis daftar dalam satu paragraf panjang.
+RESPONSE FORMAT:
+- Use bullet points (-) for listing skills or experiences.
+- Use clear line breaks between points.
+- Use Bold (**) only for titles or critical points.
+- DO NOT write lists in single long paragraphs.
 `;
 
-// scrollToBottom moved up
 const sendMessage = async () => {
   if (!userInput.value.trim()) return;
 
   if (!isOnline.value) {
     messages.value.push({
       role: "assistant",
-      text: "⚠️ **Offline mode**: API Key invalid atau koneksi bermasalah. Cek .env file anda.",
+      text: "⚠️ **Offline mode**: Invalid API Key or connection issues. Check your .env file.",
     });
     scrollToBottom();
     return;
@@ -118,7 +117,7 @@ const sendMessage = async () => {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
-      systemInstruction: `Kamu adalah asisten virtual Fadel Anfasha Putra. Berikut adalah biodata Fadel: ${bioFadel}. Jawablah dengan format Markdown yang rapi.`,
+      systemInstruction: `You are Fadel Anfasha Putra's virtual assistant. Here is Fadel's bio: ${bioFadel}. Answer in neat Markdown format.`,
     });
 
     const result = await model.generateContent(userText);
@@ -128,10 +127,10 @@ const sendMessage = async () => {
     messages.value.push({ role: "assistant", text: text });
   } catch (error) {
     console.error("Gemini Error:", error);
-    isOnline.value = false; // Set offline jika error
+    isOnline.value = false; // Set offline on error
     messages.value.push({
       role: "assistant",
-      text: "❌ Gagal terhubung ke Google Gemini. Cek koneksi internet anda.",
+      text: "❌ Failed to connect to Google Gemini. Check your internet connection.",
     });
   } finally {
     loading.value = false;
@@ -161,14 +160,14 @@ const renderMarkdown = (text) => {
             <span class="text-[10px] text-slate-400">Powered by Gemini</span>
           </div>
         </div>
-        <div class="flex items-center gap-1.5 bg-slate-800 px-2 py-1 rounded-full border border-slate-700">
+        <!-- <div class="flex items-center gap-1.5 bg-slate-800 px-2 py-1 rounded-full border border-slate-700">
           <div
             :class="['w-2 h-2 rounded-full animate-pulse', isOnline ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500']">
           </div>
-          <!-- <span :class="['text-[10px] font-medium', isOnline ? 'text-green-400' : 'text-red-400']">
+          <span :class="['text-[10px] font-medium', isOnline ? 'text-green-400' : 'text-red-400']">
             {{ isOnline ? 'Online' : 'Offline' }}
-          </span> -->
-        </div>
+          </span>
+        </div> -->
       </div>
 
       <div ref="chatContainer"
@@ -192,7 +191,7 @@ const renderMarkdown = (text) => {
       </div>
 
       <div class="p-3 bg-slate-900 border-t border-slate-800 flex gap-2 items-center">
-        <v-text-field v-model="userInput" @keyup.enter="sendMessage" placeholder="Tanya tentang pengalaman Fadel..."
+        <v-text-field v-model="userInput" @keyup.enter="sendMessage" placeholder="Ask about Fadel's experience..."
           variant="solo-filled" density="compact" hide-details class="flex-1 rounded-lg" bg-color="slate-800"
           base-color="white" color="blue" :disabled="loading">
           <template v-slot:append-inner>
@@ -219,7 +218,7 @@ const renderMarkdown = (text) => {
 .markdown-content :deep(strong) {
   font-weight: bold;
   color: #60a5fa;
-  /* Warna biru biar cantik */
+  /* Blue color for aesthetic */
 }
 
 .markdown-content :deep(p) {
